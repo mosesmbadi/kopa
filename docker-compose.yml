@@ -1,0 +1,46 @@
+services:
+    backend:
+        build:
+            context: ./backend
+            dockerfile: ./Dockerfile
+        container_name: api
+        command: python manage.py runserver 0.0.0.0:8000
+        volumes:
+            - ./:/app
+        ports:
+            - 8000:8000
+        env_file:
+            - ./.env
+        restart: unless-stopped
+        networks:
+            - mks
+
+    worker:
+        build: ./backend
+        container_name: "celery"
+        restart: unless-stopped
+        env_file:
+            - ./.env    
+        command: celery -A easymed worker --loglevel=INFO
+        depends_on:
+            - redis
+        networks:
+            - mks   
+    
+    celery-beat:
+        build: ./backend
+        container_name: celery-beat
+        command: celery -A easymed beat --loglevel=INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+        env_file:
+            - ./.env
+        restart: unless-stopped
+        depends_on:
+            - redis
+        networks:
+            - mks    
+
+
+networks:
+    mks:
+        name: mks
+        driver: bridge
