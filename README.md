@@ -85,3 +85,51 @@ If the Core Banking API is down, loan creation will fail.
 If Scoring Engine API fails, the loan is still created, but scoring is delayed.
 
 If the Celery worker isn't running, loan scores won't be retrieved automatically.
+
+# How to run
+## With Docker
+This is the most straightforward way to run the project. 
+Just rename .env.sample to .env then type docker compose up
+You must have docker and dockerc ompose installed
+You can then exec into the container and run the migrations
+```bash
+docker exec -it lms bash
+```
+Then run the migrations
+```bash
+python manage.py migrate
+```
+Create a superuser
+```bash
+python manage.py createsuperuser
+```
+
+## Without Docker
+Make sure you have virtualenv installed
+```bash
+pip install virtualenv
+```
+Create a virtual environment
+```bash
+virtualenv venv
+```
+Activate the virtual environment
+```bash
+source venv/bin/activate
+```
+Install the required packages
+```bash
+pip install -r requirements.txt
+```
+Run the migrations
+```bash
+python manage.py migrate
+```
+Create a superuser
+```bash
+python manage.py createsuperuser
+```
+Run the server
+```bash
+python manage.py runserver
+```

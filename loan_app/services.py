@@ -22,7 +22,6 @@ class LoanService:
         customer_data = core_banking_service.get_customer_kyc(customer_number)
         if not customer_data:
             raise ValidationError('Customer not found.')
-
         try:
             customer = Customer.objects.get(customer_number=customer_number)
         except Customer.DoesNotExist:
