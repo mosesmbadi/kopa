@@ -22,3 +22,6 @@ lib64/
 ./pyvenv
 # Installer logs
 pip-log.txt
+
+
+*.drawio.bkp
